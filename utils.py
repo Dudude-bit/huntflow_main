@@ -155,18 +155,6 @@ def get_status(statuses: list[dict], status_name: str) -> dict:
     assert len(status) == 1, 'Something went wrong with getting status'
     return status[0]
 
-def get_fill_quota(token, url, account_id, vacancy_id) -> int:
-    urn = f"/account/{account_id}/vacancy/{vacancy_id}/quotas"
-    uri = urllib.parse.urljoin(url, urn)
-    headers = {
-        'Authorization': f'Bearer {token}'
-    }
-    r = requests.get(uri, headers=headers)
-    assert r.ok, 'Something went wrong woth getting fill quotas'
-    fill_quotas = r.json()['1']['items']
-    assert len(fill_quotas) == 1, 'Length of fill_quotas is greater than 1'
-    return fill_quotas[0]
-
 
 def connect_candidate_to_vacancy(token, url, account_id, row: List[Cell],
                                  vacancy_id, status_id, candidate_cv):
@@ -191,6 +179,5 @@ def connect_candidate_to_vacancy(token, url, account_id, row: List[Cell],
         json=data,
         headers=headers
     )
-    print(r.json())
     assert r.ok, 'Something went wrong with connection candidate to vacancy'
 
