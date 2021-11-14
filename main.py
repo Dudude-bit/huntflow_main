@@ -5,6 +5,7 @@ import pathlib
 
 import openpyxl
 from openpyxl.worksheet.worksheet import Worksheet
+import tqdm
 
 from utils import get_account_id, insert_candidate, get_all_vacancies, connect_candidate_to_vacancy, get_vacancy, \
     get_all_statuses, get_status
@@ -22,7 +23,7 @@ def upload_data_to_huntflow(BASE_API_URL, path, token):
     account_id = get_account_id(token, BASE_API_URL)
     all_vacancies = get_all_vacancies(token, BASE_API_URL, account_id)
     all_statuses = get_all_statuses(token, BASE_API_URL, account_id)
-    for row in work_sheet.iter_rows(min_row=data_dump['start'] + 1):
+    for row in tqdm.tqdm(work_sheet.iter_rows(min_row=data_dump['start'] + 1)):
         try:
             data_dump['start'] += 1
             candidate_cv = insert_candidate(token, BASE_API_URL, account_id, row)
